@@ -1,8 +1,11 @@
 # Sim IDX Sample Project
 
-**Sim IDX** is a framework that helps you build and deploy applications that index blockchain data in minutes. Define listeners that react to specific onchain events, extract relevant data, and automatically make this data queryable via an API.
+**Sim IDX** is a framework that helps you build and deploy applications that index blockchain data in minutes. Define
+listeners that react to specific onchain events, extract relevant data, and automatically make this data queryable via
+an API.
 
-This sample project indexes **Uniswap V3 Factory pool creation events** and serves as your starting point for building with Sim IDX.
+This sample project indexes **Uniswap V3 Factory pool creation events** and serves as your starting point for building
+with Sim IDX.
 
 ## What You'll Edit
 
@@ -39,9 +42,11 @@ sim help
 
 Before deploying your app, you need to authenticate with the Sim IDX platform:
 
-1. **Authenticate**: Run `sim authenticate` and provide your API key. You can get your API key from the [Sim dashboard](https://sim.dune.com/).
+1. **Authenticate**: Run `sim authenticate` and provide your API key. You can get your API key from the
+   [Sim dashboard](https://sim.dune.com/).
 
-2. **Deploy**: Once authenticated, deploy your app with `sim deploy`. This will deploy your listener, database, and API with a single command.
+2. **Deploy**: Once authenticated, deploy your app with `sim deploy`. This will deploy your listener, database, and API
+   with a single command.
 
 After successful deployment, you'll receive your API URL and database connection string.
 
@@ -50,7 +55,8 @@ After successful deployment, you'll receive your API URL and database connection
 Ready to start building? Check out the comprehensive guides:
 
 - **[CLI Reference](https://sim-dune-docs-idx.mintlify.app/idx/cli)** - All available commands
-- **[Adding ABIs](https://sim-dune-docs-idx.mintlify.app/idx/idx/cli#sim-abi-add-<file-path>)** - How to add contract ABIs
+- **[Adding ABIs](https://sim-dune-docs-idx.mintlify.app/idx/idx/cli#sim-abi-add-<file-path>)** - How to add contract
+  ABIs
 - **[Writing Listeners](https://sim-dune-docs-idx.mintlify.app/idx/listener)** - Define your indexing logic
 - **[Building APIs](https://sim-dune-docs-idx.mintlify.app/idx/apis)** - Serve your indexed data
 - **[Database Inspection](https://sim-dune-docs-idx.mintlify.app/idx/db)** - Query your data directly
