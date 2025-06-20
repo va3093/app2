@@ -16,7 +16,7 @@ const app = new Hono<{ Bindings: Bindings }>();
 
 app.get("/hello/world", async (c) => {
   return Response.json({
-    message: "Hello World",
+    message: "Hello World 2",
   });
 });
 
