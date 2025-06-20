@@ -10,7 +10,7 @@ When you're ready to continue, the [Quickstart guide](https://sim-dune-docs-idx.
 
 The main files you'll work with are:
 
-- **`abis/`** - Add JSON ABI files for contracts you want to index
+- **`abis/`** - Add JSON ABI files for contracts you want to indexaaa
 - **`listeners/src/Listener.sol`** - Define your indexing logic, triggers, events, and handlers
 - **`apis/src/index.ts`** - Define APIs for your indexed data
 
