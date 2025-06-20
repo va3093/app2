@@ -8,23 +8,20 @@ type Bindings = {
   DB_CONNECTION_STRING: string;
 };
 
+
 const filterToken0 = Address.from("7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9");
 
 let dbClient: ReturnType<typeof drizzle>;
 
 const app = new Hono<{ Bindings: Bindings }>();
 
-app.get("/hello/world", async (c) => {
-  return Response.json({
-    message: "Hello World 2",
-  });
-});
-
 app.get("/*", async (c) => {
   try {
     const client = await getDBClient(c.env);
 
-    const result = await client.select().from(poolCreated).where(eq(poolCreated.token0, filterToken0)).limit(5);
+    const result = await client.select().from(poolCreated).where(
+      eq(poolCreated.token0, filterToken0)
+    ).limit(5);
 
     return Response.json({
       result: result,
@@ -38,7 +35,9 @@ app.get("/*", async (c) => {
 // Lazily initializes and returns a shared, connected dbClient instance.
 async function getDBClient(env: Bindings) {
   if (!env.DB_CONNECTION_STRING) {
-    throw new Error("Missing required environment variable: DB_CONNECTION_STRING");
+    throw new Error(
+      "Missing required environment variable: DB_CONNECTION_STRING"
+    );
   }
 
   if (!dbClient) {

@@ -58,7 +58,7 @@ struct RawCallContext {
 
 struct RawLogContext {
     TransactionContext txn;
-    bytes32[4] topics;
+    bytes32[] topics;
     bytes data;
 }
 

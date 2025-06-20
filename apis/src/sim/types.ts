@@ -40,25 +40,25 @@ export class Bytes {
 }
 
 export class Uint {
-    value: number;
+    value: bigint;
 
-    constructor(value: number) {
+    constructor(value: bigint) {
         this.value = value;
     }
 
     toJSON() {
-        return this.value;
+        return this.value.toString(10);
     }
 }
 
 export class Int {
-    value: number;
+    value: bigint;
 
-    constructor(value: number) {
+    constructor(value: bigint) {
         this.value = value;
     }
 
     toJSON() {
-        return this.value;
+        return this.value.toString(10);
     }
 }

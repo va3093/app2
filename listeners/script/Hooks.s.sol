@@ -9,14 +9,15 @@ import {
     TriggerType,
     RawTriggerType
 } from "lib/simidx/src/Dsl.sol";
-import {Listener} from "src/Listener.sol";
+import {Triggers} from "src/Main.sol";
 
 // TODO: This script should be hidden from the user
 contract HookScript is Script {
-    Listener listener;
+    Triggers listener;
 
     function setUp() public {
-        listener = new Listener();
+        listener = new Triggers();
+        listener.triggers();
     }
 
     function run(string calldata outputFile) public {
@@ -52,6 +53,7 @@ contract HookScript is Script {
             vm.serializeBytes(objectKey, "target_selector", functionSelector);
             vm.serializeString(objectKey, "target_type", "contract");
             vm.serializeString(objectKey, "trigger_type", target[i].trigger.triggerType.toString());
+            vm.serializeBytes32(objectKey, "listener_codehash", target[i].trigger.listenerCodehash);
             serializedTargets[i] = vm.serializeBytes32(objectKey, "handler_selector", target[i].handlerSelector);
         }
         return serializedTargets;
@@ -67,7 +69,7 @@ contract HookScript is Script {
             vm.serializeBytes(objectKey, "target_selector", functionSelector);
             vm.serializeString(objectKey, "target_type", "abi");
             vm.serializeString(objectKey, "trigger_type", target[i].trigger.triggerType.toString());
-
+            vm.serializeBytes32(objectKey, "listener_codehash", target[i].trigger.listenerCodehash);
             serializedTargets[i] = vm.serializeBytes32(objectKey, "handler_selector", target[i].handlerSelector);
         }
         return serializedTargets;
@@ -80,6 +82,7 @@ contract HookScript is Script {
             vm.serializeString(objectKey, "trigger_type", target[i].triggerType.toString());
             vm.serializeUint(objectKey, "chain_id", target[i].chainId.chainId);
             vm.serializeString(objectKey, "target_type", "global");
+            vm.serializeBytes32(objectKey, "listener_codehash", target[i].listenerCodehash);
             serializedTargets[i] = vm.serializeBytes32(objectKey, "handler_selector", target[i].handlerSelector);
         }
         return serializedTargets;

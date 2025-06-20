@@ -4,32 +4,38 @@ pragma solidity ^0.8.13;
 import {RawTriggerType, RawTrigger} from "./Dsl.sol";
 import {RawCallContext, RawBlockContext, RawLogContext} from "./Context.sol";
 
-interface Raw$OnPostCall {
-    function onPostCall(RawCallContext memory ctx) external;
+abstract contract Raw$OnCall {
+    function onCall(RawCallContext memory ctx) virtual external;
+
+    function triggerOnCall() external view returns (RawTrigger memory) {
+        return RawTrigger({
+            triggerType: RawTriggerType.CALL,
+            handlerSelector: this.onCall.selector,
+            listenerCodehash: address(this).codehash
+        });
+    }
 }
 
-interface Raw$OnPostBlock {
-    function onPostBlock(RawBlockContext memory ctx) external;
+abstract contract Raw$OnBlock {
+    function onBlock(RawBlockContext memory ctx) external virtual;
+
+    function triggerOnBlock() external view returns (RawTrigger memory) {
+        return RawTrigger({
+            triggerType: RawTriggerType.BLOCK,
+            handlerSelector: this.onBlock.selector,
+            listenerCodehash: address(this).codehash
+        });
+    }
 }
 
-interface Raw$OnPostLog {
-    function onPostLog(RawLogContext memory ctx) external;
-}
+abstract contract Raw$OnLog {
+    function onLog(RawLogContext memory ctx) external virtual;
 
-function Raw$onPostCall() pure returns (RawTrigger memory) {
-    return RawTrigger({
-        triggerType: RawTriggerType.CALL
-    });
-}
-
-function Raw$onPostBlock() pure returns (RawTrigger memory) {
-    return RawTrigger({
-        triggerType: RawTriggerType.BLOCK
-    });
-}
-
-function Raw$onPostLog() pure returns (RawTrigger memory) {
-    return RawTrigger({
-        triggerType: RawTriggerType.LOG
-    });
+    function triggerOnLog() external view returns (RawTrigger memory) {
+        return RawTrigger({
+            triggerType: RawTriggerType.LOG,
+            handlerSelector: this.onLog.selector,
+            listenerCodehash: address(this).codehash
+        });
+    }
 }

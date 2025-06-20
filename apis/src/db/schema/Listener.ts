@@ -5,9 +5,10 @@ import * as simDb from "../../sim/db";
 import * as simTypes from "../../sim/types";
 
 export const poolCreated = table("pool_created", {
+  chainId: simDb.uint64('chain_id'),
   caller: simDb.address('caller'),
   pool: simDb.address('pool'),
   token0: simDb.address('token0'),
   token1: simDb.address('token1'),
-  fee: simDb.uint256('fee'),
+  fee: simDb.uint24('fee'),
 })

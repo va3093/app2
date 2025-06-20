@@ -3,7 +3,7 @@ pragma solidity ^0.8.13;
 
 import {Test, console} from "forge-std/Test.sol";
 import {Vm} from "forge-std/Vm.sol";
-import {Listener} from "../src/Listener.sol";
+import {Listener} from "../src/Main.sol";
 import "simidx/Simidx.sol";
 import {MockContexts} from "simidx/test/MockContexts.sol";
 
@@ -15,20 +15,20 @@ contract ListenerTest is Test {
         vm.recordLogs();
     }
 
-    function test_onPostCreatePool() public {
+    function test_onCreatePool() public {
         FunctionContext memory ctx = MockContexts.mockFunctionContext();
 
-        listener.onPostCreatePool(
+        listener.onCreatePoolFunction(
             ctx,
-            UniswapV3Factory$function_createPoolInputs({tokenA: 0x8ce8725A65DaE7d3D5543372D5415f4F8ad448f9, tokenB: 0x8ce8725A65DaE7d3D5543372D5415f4F8ad448f9, fee: 1}),
-            UniswapV3Factory$function_createPoolOutputs({pool: 0x8ce8725A65DaE7d3D5543372D5415f4F8ad448f9})
+            UniswapV3Factory$createPoolFunctionInputs({tokenA: 0x8ce8725A65DaE7d3D5543372D5415f4F8ad448f9, tokenB: 0x8ce8725A65DaE7d3D5543372D5415f4F8ad448f9, fee: 1}),
+            UniswapV3Factory$createPoolFunctionOutputs({pool: 0x8ce8725A65DaE7d3D5543372D5415f4F8ad448f9})
         );
 
         Vm.Log[] memory entries = vm.getRecordedLogs();
         assertEq(entries.length, 1);
         assertEq(entries[0].topics.length, 1);
-        assertEq(entries[0].topics[0], keccak256("PoolCreated(address,address,address,address,uint256)"));
-        (address _callee, address pool, address token0, address token1, uint256 fee) = abi.decode(entries[0].data, (address, address, address, address, uint256));
+        assertEq(entries[0].topics[0], keccak256("PoolCreated(address,address,address,address,uint24)"));
+        (address _callee, address pool, address token0, address token1, uint24 fee) = abi.decode(entries[0].data, (address, address, address, address, uint24));
         assertEq(_callee, ctx.txn.call.callee);
         assertEq(pool, 0x8ce8725A65DaE7d3D5543372D5415f4F8ad448f9);
         assertEq(token0, 0x8ce8725A65DaE7d3D5543372D5415f4F8ad448f9);
@@ -36,21 +36,21 @@ contract ListenerTest is Test {
         assertEq(fee, 1);
     }
 
-    function testFuzz_onPostCreatePool(address callee, address tokenA, address tokenB, uint24 fee) public {
+    function testFuzz_onCreatePool(address callee, address tokenA, address tokenB, uint24 fee) public {
         FunctionContext memory ctx = MockContexts.mockFunctionContext();
         ctx.txn.call.callee = callee;
 
-        listener.onPostCreatePool(
+        listener.onCreatePoolFunction(
             ctx,
-            UniswapV3Factory$function_createPoolInputs({tokenA: tokenA, tokenB: tokenB, fee: fee}),
-            UniswapV3Factory$function_createPoolOutputs({pool: 0x8ce8725A65DaE7d3D5543372D5415f4F8ad448f9})
+            UniswapV3Factory$createPoolFunctionInputs({tokenA: tokenA, tokenB: tokenB, fee: fee}),
+            UniswapV3Factory$createPoolFunctionOutputs({pool: 0x8ce8725A65DaE7d3D5543372D5415f4F8ad448f9})
         );
 
         Vm.Log[] memory entries = vm.getRecordedLogs();
         assertEq(entries.length, 1);
         assertEq(entries[0].topics.length, 1);
-        assertEq(entries[0].topics[0], keccak256("PoolCreated(address,address,address,address,uint256)"));
-        (address _callee, address pool, address _token0, address _token1, uint256 _fee) = abi.decode(entries[0].data, (address, address, address, address, uint256));
+        assertEq(entries[0].topics[0], keccak256("PoolCreated(address,address,address,address,uint24)"));
+        (address _callee, address pool, address _token0, address _token1, uint24 _fee) = abi.decode(entries[0].data, (address, address, address, address, uint24));
         assertEq(_callee, callee);
         assertEq(pool, 0x8ce8725A65DaE7d3D5543372D5415f4F8ad448f9);
         assertEq(_token0, tokenA);
